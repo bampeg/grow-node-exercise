@@ -10,13 +10,13 @@ const app = express();
 // Requests
 app.get("/people", async (req, res) => {
   const { sortBy } = req.query;
-  const allPeople = [];
+  const allCharacters = [];
   let swaPeeps = "https://swapi.co/api/people";
   do {
     try {
       const { data } = await axios.get(swaPeeps);
       data.results.forEach(person => {
-        allPeople.push(person);
+        allCharacters.push(person);
       });
       swaPeeps = data.next;
     } catch (error) {
@@ -24,7 +24,23 @@ app.get("/people", async (req, res) => {
     }
   } while (swaPeeps);
 
-  res.status(200).send(allPeople);
+  if (sortBy) {
+    console.log("sorting");
+    const sortedCharacters = allCharacters.sort((a, b) => {
+      const first = a[sortBy].toUpperCase();
+      const second = b[sortBy].toUpperCase();
+      if (first < second) {
+        return -1;
+      }
+      if (first > second) {
+        return 1;
+      }
+      return 0;
+    });
+    res.status(200).send(sortedCharacters);
+  } else {
+    res.status(200).send(allCharacters);
+  }
 });
 
 app.get("/planets", (req, res) => {
