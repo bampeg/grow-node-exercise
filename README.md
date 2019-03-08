@@ -6,14 +6,14 @@
 ```
 * returns entire library of swapi characters
   
-   query param
+   ### query param:
    ```
    sortBy 
    ```
-   values
+   ### values:
    ```
-   [name, height, mass]
-
+   [ name, height, mass ]
+   ```
 ```
 /planets
 ```
